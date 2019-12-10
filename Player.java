@@ -1,5 +1,5 @@
 
-
+import java.util.*;
 
 
 
@@ -29,12 +29,14 @@ public class Player
 
 	public Contestant findContestant(Contestant c)
 	{
-		Contestant result;
+		Contestant result=null;
 
 		if(contestants.get(c.getID())!=null)
 		{
-			result = contestants.get(c.getID())
+			result = contestants.get(c.getID());
 		}
+
+		return result;
 	}
 
 	public int getID()
@@ -57,6 +59,8 @@ public class Player
 		StringBuilder s = new StringBuilder();
 
 		s.append("Player: "+name+"\nScore: "+score);
+
+		return s.toString();
 	}
 
 

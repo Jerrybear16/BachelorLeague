@@ -1,7 +1,8 @@
 
 
 
-import java.sql.*;
+import java.io.*;
+import java.util.*;
 
 
 
@@ -10,29 +11,57 @@ import java.sql.*;
 public class FantasyBachelor
 {
 
-	public static Connection connect() throws ClassNotFoundException, SQLException
-	{
-		Connection con=null;
-		Class.forName("org.sqlite.JDBC");
-		con = DriverManager.getConnection("jdbc:sqlite:FantasyBachelor.db.sqbpro");
-		System.out.println("Connected");
+	static File playerF;
+	static Scanner s;
+	static String nextPlayer;
+	static ArrayList<Player> players;
+	static String[] playerSplit;
+	static Player newPlayer;
 
-		return con;
+	private static String getPlayers(Scanner s){
+		String ret = new String(s.nextLine());
+
+		return ret;
 	}
 
+	private static void Say(String s){
+		System.out.println(s);
+	}
 
+	private static Player makePlayer(String[] ps){
+		Player np;
+		String playerName = ps[0];
+		int playerID = Integer.parseInt(ps[1]);
+		int playerScore = Integer.parseInt(ps[2]);
 
+		np = new Player(playerName,playerID,playerScore);
+
+		return np;
+	}
 
 	public static void main(String[] args)
 	{
-		try
-		{
-			connect();
+		players = new ArrayList<>();
+		playerF = new File("Players.txt");
+
+		try{
+			s = new Scanner(playerF);
 		}
-		catch(ClassNotFoundException | SQLException e)
-		{
-			System.out.println(e+"Could not connect to Database");
+		catch(FileNotFoundException e){
+			Say("File Not Found");
+			System.exit(0);
 		}
-		
+
+
+
+		while(s.hasNext())
+		{
+			nextPlayer = getPlayers(s);
+			playerSplit = nextPlayer.split(" ");
+			newPlayer = makePlayer(playerSplit);
+			players.add(newPlayer);
+		}
+
+		Say(players.toString());
 	}
 }
