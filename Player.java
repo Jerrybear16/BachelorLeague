@@ -54,11 +54,16 @@ public class Player
 		return score;
 	}
 
+	public void setScore(int i)
+	{
+		score = i;
+	}
+
 	public String toString()
 	{
 		StringBuilder s = new StringBuilder();
 
-		s.append("Player: "+name+"\nScore: "+score);
+		s.append("Player: "+name+", Score: "+score);
 
 		return s.toString();
 	}

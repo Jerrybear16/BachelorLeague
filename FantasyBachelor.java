@@ -13,10 +13,8 @@ public class FantasyBachelor
 
 	static File playerF;
 	static Scanner s;
-	static String nextPlayer;
 	static ArrayList<Player> players;
-	static String[] playerSplit;
-	static Player newPlayer;
+	static Scoreboard sb;
 
 	private static String getPlayers(Scanner s){
 		String ret = new String(s.nextLine());
@@ -39,6 +37,65 @@ public class FantasyBachelor
 		return np;
 	}
 
+	private static void readPlayers(ArrayList<Player> players, Scanner s){
+		String nextPlayer = getPlayers(s);
+		String[] playerSplit = nextPlayer.split(" ");
+		Player newPlayer = makePlayer(playerSplit);
+		players.add(newPlayer);
+	}
+
+	private static void sortByScore(ArrayList<Player> p){
+		
+		mergeSort(p,p.size());
+	}
+
+		private static void mergeSort(ArrayList<Player> p,int s){
+			if(s<2){
+				return;
+			}
+			int mid = s/2;
+			ArrayList<Player> left = new ArrayList<>();
+			ArrayList<Player> right = new ArrayList<>();
+
+			for(int i=0;i<mid;i++){
+				left.add(p.get(i));
+			}
+			for(int i=mid;i<s;i++){
+				right.add(p.get(i));
+			}
+
+			mergeSort(left,mid);
+			mergeSort(right,s-mid);
+			merge(p,left,right,mid,s-mid);
+		}
+			private static void merge(ArrayList<Player> p, ArrayList<Player> l, ArrayList<Player> r, int left, int right){
+				int i=0, j=0,k=0;
+
+				while(i<left&& j<right)
+				{
+					if(l.get(i).getScore()>=r.get(j).getScore()){
+						p.set(k,l.get(i));
+						k++;
+						i++;
+					}
+					else{
+						p.set(k,r.get(j));
+						k++;
+						j++;
+					}
+				}
+				while(i<left){
+					p.set(k,l.get(i));
+					k++;
+					i++;
+				}
+				while(j<right){
+					p.set(k,r.get(j));
+					k++;
+					j++;
+				}
+			}
+
 	public static void main(String[] args)
 	{
 		players = new ArrayList<>();
@@ -56,12 +113,11 @@ public class FantasyBachelor
 
 		while(s.hasNext())
 		{
-			nextPlayer = getPlayers(s);
-			playerSplit = nextPlayer.split(" ");
-			newPlayer = makePlayer(playerSplit);
-			players.add(newPlayer);
+			readPlayers(players,s);
 		}
 
-		Say(players.toString());
+		sortByScore(players);
+		sb = new Scoreboard(players);
+		Say(sb.toString());
 	}
 }
