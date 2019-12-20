@@ -149,7 +149,6 @@ public class FantasyBachelor
 				for(Contestant cont: c){
 					b.append(cont.getID()+",");
 				}
-				b.deleteCharAt(b.length()-1);
 
 				p.println(b.toString());
 				p.flush();
