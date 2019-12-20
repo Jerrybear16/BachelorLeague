@@ -1,4 +1,8 @@
-Steve 4 500 1,2,3,4,
+Steve 4 500 
+Alex 6 499 
 Jack 2 450 
+Hector 8 450 
 Jeroen 1 300 
+Davis 5 230 
+Jordan 7 40 
 Matt 3 30 

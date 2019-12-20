@@ -172,12 +172,27 @@ public class FantasyBachelor
 			return nc;
 		}
 
-	private static void printMenu(){
-		Say("Enter the action you want to take: ");
-		Say("\t1. Enter player contestant selections (final fours)");
-		Say("\t2. Enter player contestant selections (wildcards)");
-		Say("\t3. Enter a score");
-		Say("\t4. Exit");
+	private static void printMenu(int x){
+
+		switch(x){
+
+			case 0:{
+				Say("Enter the action you want to take: ");
+				Say("\t1. Enter player contestant selections (final fours)");
+				Say("\t2. Enter player contestant selections (wildcards)");
+				Say("\t3. Enter a score");
+				Say("\t4. Exit");
+			}
+		}
+		
+	}
+
+	private static void printMenu(ArrayList<Player> p){
+
+		Say("Select a Player\n");
+		for(int i=0;i<p.size();i++){
+			Say((i+1)+") "+p.get(i).toString());
+		}
 	}
 
 	private static int getInput(Scanner s){
@@ -258,13 +273,13 @@ public class FantasyBachelor
 		//user interaction loop
 		while(running){
 
-			printMenu();
+			printMenu(0);
 			entry = getInput(input);
 
 			switch(entry){
 
 				case 1:{
-					Say("Select player");
+					printMenu(players);
 					break;
 				}
 				case 2:{
