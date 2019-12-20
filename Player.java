@@ -12,7 +12,8 @@ public class Player
 	private int id;
 	private String name;
 	private int score;
-	private HashMap<Integer,Contestant> contestants;
+	private HashMap<Integer,Contestant> finalFour;
+	private HashMap<Integer,Contestant> wildcards;
 
 
 	public Player(String n, int i, int s)
@@ -20,22 +21,38 @@ public class Player
 		id = i;
 		score = s;
 		name = new String(n);
+		finalFour = new HashMap<>();
+		wildcards = new HashMap<>();
 	}
 
-	public void addContestant(Contestant c)
+	public void addFF(Contestant c)
 	{
-		contestants.put(c.getID(),c);
+		finalFour.put(c.getID(),c);
 	}
 
-	public Contestant findContestant(Contestant c)
+	public Contestant findFF(Contestant c)
 	{
 		Contestant result=null;
 
-		if(contestants.get(c.getID())!=null)
+		if(finalFour.get(c.getID())!=null)
 		{
-			result = contestants.get(c.getID());
+			result = finalFour.get(c.getID());
 		}
 
+		return result;
+	}
+
+	public HashMap<Integer,Contestant> getFF()
+	{
+		return finalFour;
+	}
+
+	public void addWC(Contestant c){
+		wildcards.put(c.getID(),c);
+	}
+
+	public Contestant findWC(Contestant c){
+		Contestant result = wildcards.get(c.getID());
 		return result;
 	}
 

@@ -10,7 +10,7 @@
 public class Contestant
 {
 	private String name;
-	private int id;
+	private Integer id;
 
 	public Contestant(String n, int i)
 	{

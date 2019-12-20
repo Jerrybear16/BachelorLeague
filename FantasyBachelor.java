@@ -12,10 +12,10 @@ public class FantasyBachelor
 {
 
 	private static void Say(String s){
-		System.out.println(s);
+		System.out.println("\t"+s);
 	}
 
-	private static Player makePlayer(String[] ps){
+	private static Player makePlayer(String[] ps,HashMap<Integer, Contestant> c){
 		Player np;
 		String playerName = ps[0];
 		int playerID = Integer.parseInt(ps[1]);
@@ -23,13 +23,26 @@ public class FantasyBachelor
 
 		np = new Player(playerName,playerID,playerScore);
 
+		if(ps.length>=4){
+			addFFs(np,c,ps[3]);
+		}
+
 		return np;
 	}
 
-	private static void readPlayers(ArrayList<Player> players, Scanner s){
+	private static void addFFs(Player p, HashMap<Integer, Contestant> c,String s){
+		String[] intS = s.split(",");
+		for(int i=0;i<intS.length;i++)
+		{
+			p.addFF(c.get(Integer.parseInt(intS[i])));
+		}
+
+	}
+
+	private static void readPlayers(ArrayList<Player> players, Scanner s, HashMap<Integer, Contestant> c){
 		String nextPlayer = s.nextLine();
 		String[] playerSplit = nextPlayer.split(" ");
-		Player newPlayer = makePlayer(playerSplit);
+		Player newPlayer = makePlayer(playerSplit,c);
 		players.add(newPlayer);
 	}
 
@@ -124,24 +137,32 @@ public class FantasyBachelor
 		private static void writePlayers(PrintWriter p, ArrayList<Player> players){
 
 			StringBuilder b;
+			Collection<Contestant> c;
 			for(int i=0;i<players.size();i++)
 			{
+				c = players.get(i).getFF().values();
 				b = new StringBuilder();
 				b.append(players.get(i).getName()+ " ");
 				b.append(players.get(i).getID()+ " ");
-				b.append(players.get(i).getScore());
+				b.append(players.get(i).getScore()+" ");
+
+				for(Contestant cont: c){
+					b.append(cont.getID()+",");
+				}
+				b.deleteCharAt(b.length()-1);
+
 				p.println(b.toString());
 				p.flush();
 			}
 
 		}
 
-	private static void readConts(ArrayList<Contestant> c, Scanner s){
+	private static void readConts(HashMap<Integer,Contestant> c, Scanner s){
 		String nextCont = s.nextLine();
 		String[] contSplit = nextCont.split(",");
 		Contestant cont = makeCont(contSplit);
 
-		c.add(cont);
+		c.put(cont.getID(),cont);
 	}
 		private static Contestant makeCont(String[] cs){
 			Contestant nc;
@@ -152,23 +173,66 @@ public class FantasyBachelor
 			return nc;
 		}
 
+	private static void printMenu(){
+		Say("Enter the action you want to take: ");
+		Say("\t1. Enter player contestant selections (final fours)");
+		Say("\t2. Enter player contestant selections (wildcards)");
+		Say("\t3. Enter a score");
+		Say("\t4. Exit");
+	}
+
+	private static int getInput(Scanner s){
+		String str = s.nextLine();
+		int ans=0;
+		try{
+			
+			ans = Integer.parseInt(str);
+		}
+		catch(NumberFormatException e){
+			Say("Entry is not a number");
+		}
+
+		return ans;
+	}
+
 	public static void main(String[] args)
 	{
 		//declare necessary varialbles
 		File playerF;//player file
 		File contF;//contestant file
 		Scanner s =null;
+		Scanner input = new Scanner(System.in);
 		ArrayList<Player> players;
-		ArrayList<Contestant> conts;
+		HashMap<Integer,Contestant> conts;
 		Scoreboard sb;
 		PrintWriter p;
 
+		boolean running=true;
+		int entry;
+
 		//initialize list of players
 		players = new ArrayList<>();
-		conts = new ArrayList<>();
+		conts = new HashMap<>();
+
 		//initialize player file
 		playerF = new File("Players.txt");
 		contF = new File("contestants.txt");
+
+		//initialize scanner to contestant file
+		try{
+			s = new Scanner(contF);
+		}
+		catch(FileNotFoundException e)
+		{
+			Say("Contestant File not found");
+			System.exit(0);
+		}
+
+		//read all the lines from the contestant file
+		while(s.hasNext())
+		{
+			readConts(conts,s);
+		}
 
 		//initialize scanner to player file
 		try{
@@ -183,7 +247,7 @@ public class FantasyBachelor
 		//read all the lines form the player file
 		while(s.hasNext())
 		{
-			readPlayers(players,s);
+			readPlayers(players,s,conts);
 		}
 		
 		//sort the players by score and add them to the scoreboard
@@ -191,28 +255,45 @@ public class FantasyBachelor
 		sb = new Scoreboard(players);
 		s.close();
 
-		//initialize scanner to contestant file
-		try{
-			s = new Scanner(contF);
-		}
-		catch(FileNotFoundException e)
-		{
-			Say("Contestant File not found");
-			System.exit(0);
-		}
+		
+		//user interaction loop
+		while(running){
 
-		while(s.hasNext())
-		{
-			readConts(conts,s);
-		}
+			printMenu();
+			entry = getInput(input);
 
-		for(int i=0;i<conts.size();i++)
-		{
-			Say(conts.get(i).toString());
+			switch(entry){
+
+				case 1:{
+					Say("Select player");
+					break;
+				}
+				case 2:{
+					Say("Select player");
+					break;
+				}
+				case 3:{
+					Say("Select contstant");
+					break;
+				}
+				case 4:{
+					Say("Thanks for playing!");
+					running = false;
+					break;
+				}
+				default:{
+					Say("Invalid entry");
+					break;
+
+				}
+			}
+
 		}
+		
 
 		//save the player data back to the file
 		savePlayers(playerF,players);
+		//saveContestants(contF,conts);
 
 		s.close();
 	}
