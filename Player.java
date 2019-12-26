@@ -27,7 +27,12 @@ public class Player
 
 	public void addFF(Contestant c)
 	{
-		finalFour.put(c.getID(),c);
+		if(finalFour.size()<4){
+			finalFour.put(c.getID(),c);
+		}
+		else{
+			System.out.println("Cannot add more contestants to Final Four");
+		}
 	}
 
 	public Contestant findFF(Contestant c)
@@ -48,12 +53,22 @@ public class Player
 	}
 
 	public void addWC(Contestant c){
-		wildcards.put(c.getID(),c);
+		if(wildcards.size()<2){
+			wildcards.put(c.getID(),c);
+		}
+		else{
+			System.out.println("Cannot add more contestants to wildcards");
+		}
+	
 	}
 
 	public Contestant findWC(Contestant c){
 		Contestant result = wildcards.get(c.getID());
 		return result;
+	}
+
+	public HashMap<Integer,Contestant> getWC(){
+		return wildcards;
 	}
 
 	public int getID()
@@ -80,7 +95,25 @@ public class Player
 	{
 		StringBuilder s = new StringBuilder();
 
-		s.append("Player: "+name+", Score: "+score);
+		s.append("Player: "+name+", Score: "+score+"\n");
+
+		if(!finalFour.isEmpty()){
+			s.append("\t\t\tFinal Four:\n\t\t\t");
+			for(Contestant c: finalFour.values()){
+				s.append(c.toString()+"\t\t\t");
+			}
+		}
+
+		
+
+		if(!wildcards.isEmpty()){
+			s.append("\t\t\tWildcards:\n\t\t\t");
+			for(Contestant c: wildcards.values()){
+				s.append(c.toString()+"\t\t\t");
+			}
+
+		}
+
 
 		return s.toString();
 	}

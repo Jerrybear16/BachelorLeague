@@ -167,7 +167,15 @@ public class FantasyBachelor
 			Contestant nc;
 			String contName = cs[0];
 			int id = Integer.parseInt(cs[1]);
-			nc = new Contestant(contName, id);
+			boolean active=false;
+
+			if(Integer.parseInt(cs[2])==0){
+				active = false;
+			}
+			else if(Integer.parseInt(cs[2])==1){
+				active = true;
+			}
+			nc = new Contestant(contName, id,active);
 
 			return nc;
 		}
@@ -194,17 +202,70 @@ public class FantasyBachelor
 			Say((i+1)+") "+p.get(i).toString());
 		}
 	}
+	private static void printMenu(HashMap<Integer,Contestant> c){
+		Collection<Contestant> conts = c.values();
+
+		for(Contestant cont:conts){
+			Say(cont.getID()+") "+cont.toString());
+		}
+
+	}
+
+	private static Player getPlayer(Scanner s, ArrayList<Player> p){
+		int x;
+		
+		Player ret;
+
+		while(true)
+		{
+			x = getInput(s);
+			if(x>0 && x<=p.size()){
+				break;
+			}
+			Say("invalid entry, try again");
+		}
+		
+
+		ret = p.get(x-1);
+
+		return ret;
+	}
+
+	
+	private static Contestant getContestant(Scanner s, HashMap<Integer,Contestant> c){
+		Contestant ret;
+		int x;
+
+		while(true)
+		{
+			x = getInput(s);
+			if(x>0 && x<=c.size()){
+				break;
+			}
+			Say("Invalid entry, try again");
+		}
+
+		ret = c.get(x);
+
+		return ret;
+	}
+
 
 	private static int getInput(Scanner s){
-		String str = s.nextLine();
 		int ans=0;
-		try{
-			
-			ans = Integer.parseInt(str);
+		boolean invalid =true;
+
+		while(invalid){
+			try{
+				invalid =false;
+				ans = Integer.parseInt(s.nextLine());
+			}
+			catch(NumberFormatException e){
+				Say("Entry is not a number, try again");
+				invalid = true;
+			}
 		}
-		catch(NumberFormatException e){
-			Say("Entry is not a number");
-		}
+		
 
 		return ans;
 	}
@@ -220,6 +281,8 @@ public class FantasyBachelor
 		HashMap<Integer,Contestant> conts;
 		Scoreboard sb;
 		PrintWriter p;
+		Player pl;
+		Contestant c;
 
 		boolean running=true;
 		int entry;
@@ -280,10 +343,22 @@ public class FantasyBachelor
 
 				case 1:{
 					printMenu(players);
+					pl = getPlayer(input,players);
+					Say(pl.toString());
+					printMenu(conts);
+					c = getContestant(input,conts);
+					Say(c.toString());
+					pl.addFF(c);
 					break;
 				}
 				case 2:{
-					Say("Select player");
+					printMenu(players);
+					pl = getPlayer(input,players);
+					Say(pl.toString());
+					printMenu(conts);
+					c = getContestant(input,conts);
+					Say(c.toString());
+					pl.addWC(c);
 					break;
 				}
 				case 3:{
