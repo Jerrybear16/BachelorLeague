@@ -14,6 +14,7 @@ public class Player
 	private int score;
 	private HashMap<Integer,Contestant> finalFour;
 	private HashMap<Integer,Contestant> wildcards;
+	private Contestant winner;
 
 
 	public Player(String n, int i, int s)
@@ -23,6 +24,7 @@ public class Player
 		name = new String(n);
 		finalFour = new HashMap<>();
 		wildcards = new HashMap<>();
+		winner = new Contestant();
 	}
 
 	public void addFF(Contestant c)
@@ -88,7 +90,18 @@ public class Player
 
 	public void setScore(int i)
 	{
-		score = i;
+		score = score+i;
+	}
+
+	public Contestant getWinner(){
+		return winner;
+	}
+
+	public boolean isWinner(Contestant c){
+		return c.getID()==winner.getID();
+	}
+	public void setWinner(Contestant c){
+		winner = c;
 	}
 
 	public String toString()
@@ -96,6 +109,7 @@ public class Player
 		StringBuilder s = new StringBuilder();
 
 		s.append("Player: "+name+", Score: "+score+"\n");
+		s.append("\t\t\tWinner: "+winner.getName()+"\n");
 
 		if(!finalFour.isEmpty()){
 			s.append("\t\t\tFinal Four:\n\t\t\t");

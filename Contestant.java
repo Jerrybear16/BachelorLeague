@@ -19,6 +19,11 @@ public class Contestant
 		id = i;
 		active = b;
 	}
+	public Contestant(){
+		name = null;
+		id = -1;
+		active = false;
+	}
 
 	public int getID()
 	{
