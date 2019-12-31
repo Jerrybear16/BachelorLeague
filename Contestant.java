@@ -19,11 +19,6 @@ public class Contestant
 		id = i;
 		active = b;
 	}
-	public Contestant(){
-		name = null;
-		id = -1;
-		active = false;
-	}
 
 	public int getID()
 	{
@@ -33,6 +28,22 @@ public class Contestant
 	public String getName()
 	{
 		return name;
+	}
+
+	public void eliminate(){
+		active =false;
+	}
+	public void activate(){
+		active = true;
+	}
+
+	public String activeString(){
+		if(active){
+			return "1";
+		}
+		else{
+			return "0";
+		}
 	}
 
 	public String toString(){

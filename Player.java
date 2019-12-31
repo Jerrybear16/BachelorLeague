@@ -24,7 +24,7 @@ public class Player
 		name = new String(n);
 		finalFour = new HashMap<>();
 		wildcards = new HashMap<>();
-		winner = new Contestant();
+		winner = null;
 	}
 
 	public void addFF(Contestant c)
@@ -101,7 +101,13 @@ public class Player
 		return c.getID()==winner.getID();
 	}
 	public void setWinner(Contestant c){
-		winner = c;
+		if(finalFour.containsValue(c)){
+			winner = c;
+		}
+		else{
+			System.out.println("Cannot set a winner who is not in final four");
+		}
+		
 	}
 
 	public String toString()
@@ -109,7 +115,11 @@ public class Player
 		StringBuilder s = new StringBuilder();
 
 		s.append("Player: "+name+", Score: "+score+"\n");
-		s.append("\t\t\tWinner: "+winner.getName()+"\n");
+
+		if(winner!=null){
+			s.append("\t\t\tWinner: "+winner.getName()+"\n");
+		}
+		
 
 		if(!finalFour.isEmpty()){
 			s.append("\t\t\tFinal Four:\n\t\t\t");

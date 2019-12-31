@@ -100,6 +100,32 @@ public class FantasyBachelor
 			}
 
 
+	private static void saveContestants(File pFile, HashMap<Integer,Contestant> conts){
+		PrintWriter p=null;
+		File f = new File("ContestantTemp.txt");
+
+		try{
+			f.createNewFile();
+		}
+		catch(IOException e){
+			Say("Something went wrong");
+			System.exit(0);
+		}
+
+		try{
+			p = new PrintWriter(f);
+		}
+		catch(FileNotFoundException e){
+			Say("Temp Contestant File not found");
+			System.exit(0);
+		}
+
+		writeContestants(p,conts);
+
+		f.renameTo(pFile);
+		p.close();
+		f.delete();
+	}
 
 
 	private static void savePlayers(File pFile, ArrayList<Player> players){
@@ -150,11 +176,28 @@ public class FantasyBachelor
 				for(Contestant cont: c){
 					b.append(cont.getID()+",");
 				}
-				b.append(players.get(i).getWinner().getID());
+				if(players.get(i).getWinner()!=null){
+					b.append(players.get(i).getWinner().getID());
+				}
+				
 				p.println(b.toString());
 				p.flush();
 			}
 
+		}
+
+		private static void writeContestants(PrintWriter p, HashMap<Integer,Contestant> c){
+			StringBuilder b;
+
+			for(Contestant cont:c.values()){
+				b = new StringBuilder();
+				b.append(cont.getName()+",");
+				b.append(cont.getID()+",");
+				b.append(cont.activeString());
+				p.println(b.toString());
+				p.flush();
+			}
+			
 		}
 
 	private static void readConts(HashMap<Integer,Contestant> c, Scanner s){
@@ -192,7 +235,10 @@ public class FantasyBachelor
 				Say("\t3. Enter player winner selection");
 				Say("\t4. Enter a score");
 				Say("\t5. Reset scores");
-				Say("\t6. Exit");
+				Say("\t6. Emliminate a contestant");
+				Say("\t7. Display all players");
+				Say("\t8. Display all contestants");
+				Say("\t9. Exit");
 				break;
 			}
 			case 1:{
@@ -452,7 +498,20 @@ public class FantasyBachelor
 					}
 					break;
 				}
-				case 6:{//exit game
+				case 6:{
+					printMenu(conts);
+					c = getContestant(input,conts);
+					c.eliminate();
+				}
+				case 7:{
+					printMenu(players);
+					break;
+				}
+				case 8:{
+					printMenu(conts);
+					break;
+				}
+				case 9:{//exit game
 					Say("Thanks for playing!");
 					running = false;
 					break;
@@ -469,6 +528,7 @@ public class FantasyBachelor
 
 		//save the player data back to the file
 		savePlayers(playerF,players);
+		saveContestants(contF,conts);
 		//saveContestants(contF,conts);
 
 		s.close();
