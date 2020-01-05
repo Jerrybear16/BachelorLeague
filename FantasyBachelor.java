@@ -31,7 +31,7 @@ public class FantasyBachelor
 	}
 
 	private static void addFFs(Player p, HashMap<Integer, Contestant> c,String s){
-		String[] intS = s.split(",");
+		String[] intS = s.split(";");
 		for(int i=0;i<intS.length-1;i++)
 		{
 			p.addFF(c.get(Integer.parseInt(intS[i])));
@@ -42,7 +42,7 @@ public class FantasyBachelor
 
 	private static void readPlayers(ArrayList<Player> players, Scanner s, HashMap<Integer, Contestant> c){
 		String nextPlayer = s.nextLine();
-		String[] playerSplit = nextPlayer.split(" ");
+		String[] playerSplit = nextPlayer.split(",");
 		Player newPlayer = makePlayer(playerSplit,c);
 		players.add(newPlayer);
 	}
@@ -169,12 +169,12 @@ public class FantasyBachelor
 			{
 				c = players.get(i).getFF().values();
 				b = new StringBuilder();
-				b.append(players.get(i).getName()+ " ");
-				b.append(players.get(i).getID()+ " ");
-				b.append(players.get(i).getScore()+" ");
+				b.append(players.get(i).getName()+ ",");
+				b.append(players.get(i).getID()+ ",");
+				b.append(players.get(i).getScore()+",");
 
 				for(Contestant cont: c){
-					b.append(cont.getID()+",");
+					b.append(cont.getID()+";");
 				}
 				if(players.get(i).getWinner()!=null){
 					b.append(players.get(i).getWinner().getID());
@@ -261,7 +261,7 @@ public class FantasyBachelor
 	private static void updatePlayers(Contestant c, ArrayList<Player> p, int s,int sp){
 
 		for(Player player:p){
-			if(player.isWinner(c)){
+			if(player.getWinner()!=null && player.isWinner(c)){
 				Say(player.getName()+" selected "+c.getName()+" as the winner. Adding bonus");
 				if(sp==1||sp==7){
 					s+=10;
