@@ -480,9 +480,11 @@ public class FantasyBachelor
 				}
 				case 2:{//same thing but for wildcard list
 
-					for(int i=0;i<2;i++){
+					
 						printMenu(players);
 						pl = getPlayer(input,players);
+						pl.clearWC();
+					for(int i=0;i<2;i++){
 						Say(pl.toString());
 						printMenu(conts);
 						c = getContestant(input,conts);

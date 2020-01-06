@@ -1,11 +1,11 @@
-Pistol Pete,1,0,,
-The Windmill Warrior,2,0,,
-Dominate Me Demi,3,0,,
+Matt Ferruzza Is A Fraud,5,0,,24;29;
+The Windmill Warrior,2,0,,11;30;
+Dominate Me Demi,3,0,,11;30;
+Hannah B's Fourth Choice,9,0,,11;30;
+I'm Just Excited to See Nick,7,0,,17;7;
+Pistol Pete,1,0,,4;24;
 No I Won't Stop Talking About Jaqueline,4,0,,
-MattFerruzza Is A Fraud,5,0,,24;29;
-Alex,6,0,,
-Jack,7,0,,
+Alex,6,0,,3;7;
 Dorko,8,0,,
-Davis,9,0,,
 Mr. Commissioner Sir,10,0,,
 Matt,11,0,,

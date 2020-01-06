@@ -9,7 +9,7 @@ public class Scoreboard
 	private ArrayList<Player> players;
 
 	public Scoreboard(ArrayList<Player> p){
-		players = new ArrayList<>(p);
+		players = p;
 	}
 
 	public String toString(){

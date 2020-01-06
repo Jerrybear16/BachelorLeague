@@ -12,6 +12,7 @@ public class Player
 	private int id;
 	private String name;
 	private int score;
+	private final boolean HannahB;
 	private HashMap<Integer,Contestant> finalFour;
 	private HashMap<Integer,Contestant> wildcards;
 	private Contestant winner;
