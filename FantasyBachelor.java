@@ -26,11 +26,16 @@ public class FantasyBachelor
 		if(ps.length>=4){
 			addFFs(np,c,ps[3]);
 		}
+		if(ps.length>=5){
+			addWCs(np,c,ps[4]);
+		}
 
 		return np;
 	}
 
 	private static void addFFs(Player p, HashMap<Integer, Contestant> c,String s){
+
+		if(s.length()<1){return;}
 		String[] intS = s.split(";");
 		for(int i=0;i<intS.length-1;i++)
 		{
@@ -38,6 +43,13 @@ public class FantasyBachelor
 		}
 		p.setWinner(c.get(Integer.parseInt(intS[intS.length-1])));
 
+	}
+
+	private static void addWCs(Player p, HashMap<Integer, Contestant> c, String s){
+		String[] intS = s.split(";");
+		for(int i=0;i<intS.length;i++){
+			p.addWC(c.get(Integer.parseInt(intS[i])));
+		}
 	}
 
 	private static void readPlayers(ArrayList<Player> players, Scanner s, HashMap<Integer, Contestant> c){
@@ -164,22 +176,26 @@ public class FantasyBachelor
 		private static void writePlayers(PrintWriter p, ArrayList<Player> players){
 
 			StringBuilder b;
-			Collection<Contestant> c;
 			for(int i=0;i<players.size();i++)
 			{
-				c = players.get(i).getFF().values();
 				b = new StringBuilder();
 				b.append(players.get(i).getName()+ ",");
 				b.append(players.get(i).getID()+ ",");
 				b.append(players.get(i).getScore()+",");
 
-				for(Contestant cont: c){
-					b.append(cont.getID()+";");
+				for(Contestant c: players.get(i).getFF().values()){
+					b.append(c.getID()+";");
 				}
 				if(players.get(i).getWinner()!=null){
 					b.append(players.get(i).getWinner().getID());
 				}
 				
+				b.append(",");
+
+				for(Contestant c: players.get(i).getWC().values()){
+					b.append(c.getID()+";");
+				}
+
 				p.println(b.toString());
 				p.flush();
 			}
@@ -463,14 +479,18 @@ public class FantasyBachelor
 					break;
 				}
 				case 2:{//same thing but for wildcard list
-					printMenu(players);
-					pl = getPlayer(input,players);
-					Say(pl.toString());
-					printMenu(conts);
-					c = getContestant(input,conts);
-					Say(c.toString());
-					pl.addWC(c);
-					break;
+
+					for(int i=0;i<2;i++){
+						printMenu(players);
+						pl = getPlayer(input,players);
+						Say(pl.toString());
+						printMenu(conts);
+						c = getContestant(input,conts);
+						Say(c.toString());
+						pl.addWC(c);
+
+					}
+										break;
 				}
 				case 3:{//same thing but for winner
 					printMenu(players);

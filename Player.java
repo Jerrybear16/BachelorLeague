@@ -64,6 +64,10 @@ public class Player
 	
 	}
 
+	public void clearWC(){
+		wildcards = new HashMap<>();
+	}
+
 	public Contestant findWC(Contestant c){
 		Contestant result = wildcards.get(c.getID());
 		return result;
