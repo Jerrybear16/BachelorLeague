@@ -11,6 +11,8 @@ import java.util.*;
 public class FantasyBachelor
 {
 
+	int kisses;
+
 	private static void Say(String s){
 		System.out.println("\t"+s);
 	}
@@ -29,6 +31,9 @@ public class FantasyBachelor
 		if(ps.length>=5){
 			addWCs(np,c,ps[4]);
 		}
+		if(ps.length>=6){
+			np.setWeeklyBonus(Integer.parseInt(ps[5])==1);
+		}
 
 		return np;
 	}
@@ -46,9 +51,11 @@ public class FantasyBachelor
 	}
 
 	private static void addWCs(Player p, HashMap<Integer, Contestant> c, String s){
+		if(s.length()<1){return;}
 		String[] intS = s.split(";");
 		for(int i=0;i<intS.length;i++){
-			p.addWC(c.get(Integer.parseInt(intS[i])));
+				p.addWC(c.get(Integer.parseInt(intS[i])));
+			
 		}
 	}
 
@@ -196,6 +203,12 @@ public class FantasyBachelor
 					b.append(c.getID()+";");
 				}
 
+				if(players.get(i).getWeeklyBonus()){
+					b.append(","+1);
+				}else{
+					b.append(","+0);
+				}
+
 				p.println(b.toString());
 				p.flush();
 			}
@@ -249,12 +262,16 @@ public class FantasyBachelor
 				Say("\t1. Enter player contestant selections (final fours)");
 				Say("\t2. Enter player contestant selections (wildcards)");
 				Say("\t3. Enter player winner selection");
-				Say("\t4. Enter a score");
-				Say("\t5. Reset scores");
-				Say("\t6. Emliminate a contestant");
-				Say("\t7. Display all players");
-				Say("\t8. Display all contestants");
-				Say("\t9. Exit");
+				Say("\t4. Enter player weekly bonus selection");
+				Say("\t5. Enter a score");
+				Say("\t6. Reset scores");
+				Say("\t7. Weekly Bonus over/yes hits");
+				Say("\t8. Weekly bonus under/no hits");
+				Say("\t9. Emliminate a contestant");
+				Say("\t10. Display all players");
+				Say("\t11. Display all contestants");
+				Say("\t12 Check For Kisses");
+				Say("\t13. Exit");
 				break;
 			}
 			case 1:{
@@ -266,8 +283,13 @@ public class FantasyBachelor
 				Say("\t5. Tells the Bachelor she's in love or falling in love with him");
 				Say("\t6. Girl gets last rose of the rose ceremony");
 				Say("\t7. Recieves a group date rose");
-				Say("\t8. Winning team of group date (only valid for main girl)");
+				Say("\t8. Winning team of group date");
 				Say("\t9. On 2 on 1 date");
+				Say("\t10. First impression rose");
+				Say("\t11. Tries to steal the bachelor from another girl");
+				Say("\t12. Kissed the Bachelor");
+				Say("\t13. Rose recieved");
+				Say("\t14. Goes on group date");
 				break;
 			}
 		}
@@ -275,7 +297,7 @@ public class FantasyBachelor
 	}
 
 	private static void updatePlayers(Contestant c, ArrayList<Player> p, int s,int sp){
-
+		
 		for(Player player:p){
 			if(player.getWinner()!=null && player.isWinner(c)){
 				Say(player.getName()+" selected "+c.getName()+" as the winner. Adding bonus");
@@ -283,8 +305,10 @@ public class FantasyBachelor
 					s+=10;
 				}else if(sp==2){
 					s-=10;
-				}else if(sp==3||sp==4||sp==5||sp==6){
+				}else if(sp==3||sp==4||sp==5||sp==6||sp==11){
 					s+=5;
+				}else if(sp==10){
+					s+=100;
 				}
 			}
 			if(player.getFF().containsValue(c)){
@@ -311,7 +335,9 @@ public class FantasyBachelor
 		Collection<Contestant> conts = c.values();
 		Say("Select a contestant\n");
 		for(Contestant cont:conts){
-			Say(cont.getID()+". "+cont.toString());
+			if(cont.isActive()){
+				Say(cont.getID()+". "+cont.toString());
+			}
 		}
 
 	}
@@ -362,7 +388,7 @@ public class FantasyBachelor
 
 		while(true){
 			x = getInput(s);
-			if(x>0 && x<=9){
+			if(x>0 && x<=11){
 				break;
 			}
 			Say("invalid entry, try again");
@@ -371,6 +397,31 @@ public class FantasyBachelor
 
 		return x;
 
+	}
+
+	private static void getWeeklyBonusInput(Player p, Scanner s){
+		Say("Enter 1 for over/yes. 0 for under/no");
+		int x=-1;
+		while(true){
+			x = getInput(s);
+			if(x==1 || x==0){
+				break;
+			}
+			Say("invalid entry, try again");
+		}
+
+		p.setWeeklyBonus(x==1);
+		
+	}
+
+	private static void weeklyBonus(ArrayList<Player> p, boolean b){
+
+		for(Player pl:p){
+			if(pl.getWeeklyBonus()==b){
+				Say("Bonus hit for "+pl.getName());
+				pl.setScore(25);
+			}
+		}
 	}
 
 	private static int getInput(Scanner s){
@@ -390,6 +441,16 @@ public class FantasyBachelor
 		
 
 		return ans;
+	}
+
+	private static void checkForKisses(Scoreboard s, ArrayList<Player> p){
+
+		for(Player pl:p){
+			if(pl.getKisses()==s.getKisses()){
+				Say(pl.getName()+" guessed the correct number of kisses!");
+				pl.setScore(25);
+			}
+		}
 	}
 
 	public static void main(String[] args)
@@ -504,7 +565,13 @@ public class FantasyBachelor
 					pl.setWinner(c);
 					break;
 				}
-				case 4:{//print contetant list, select contestant, select a scoring play, update players who have that contestant
+				case 4:{
+					printMenu(players);
+					pl = getPlayer(input,players);
+					getWeeklyBonusInput(pl,input);
+					break;
+				}
+				case 5:{//print contetant list, select contestant, select a scoring play, update players who have that contestant
 					printMenu(conts);
 					c = getContestant(input,conts);
 					printMenu(1);
@@ -514,26 +581,39 @@ public class FantasyBachelor
 					sortByScore(players);
 					break;
 				}
-				case 5:{//take every score and make it 0
+				case 6:{//take every score and make it 0
 					for(Player play:players){
 						play.setScore(-play.getScore());
 					}
 					break;
 				}
-				case 6:{
-					printMenu(conts);
-					c = getContestant(input,conts);
-					c.eliminate();
-				}
 				case 7:{
-					printMenu(players);
+					weeklyBonus(players,true);
 					break;
 				}
 				case 8:{
+					weeklyBonus(players,false);
+					break;
+				}
+				case 9:{
+					printMenu(conts);
+					c = getContestant(input,conts);
+					c.eliminate();
+					break;
+				}
+				case 10:{
+					printMenu(players);
+					break;
+				}
+				case 11:{
 					printMenu(conts);
 					break;
 				}
-				case 9:{//exit game
+				case 12:{
+					checkForKisses(sb,players);
+					break;
+				}
+				case 13:{//exit game
 					Say("Thanks for playing!");
 					running = false;
 					break;

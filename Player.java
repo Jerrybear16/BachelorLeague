@@ -12,10 +12,11 @@ public class Player
 	private int id;
 	private String name;
 	private int score;
-	private final boolean HannahB;
+	private int kisses;
 	private HashMap<Integer,Contestant> finalFour;
 	private HashMap<Integer,Contestant> wildcards;
 	private Contestant winner;
+	private boolean weeklyBonus;
 
 
 	public Player(String n, int i, int s)
@@ -26,6 +27,7 @@ public class Player
 		finalFour = new HashMap<>();
 		wildcards = new HashMap<>();
 		winner = null;
+		kisses =0;
 	}
 
 	public void addFF(Contestant c)
@@ -113,6 +115,21 @@ public class Player
 			System.out.println("Cannot set a winner who is not in final four");
 		}
 		
+	}
+
+	public void setWeeklyBonus(boolean b){
+		weeklyBonus =b;
+	}
+
+	public Boolean getWeeklyBonus(){
+		return weeklyBonus;
+	}
+
+	public int getKisses(){
+		return kisses;
+	}
+	public void setKisses(int i){
+		kisses = i;
 	}
 
 	public String toString()

@@ -1,11 +1,11 @@
-Matt Ferruzza Is A Fraud,5,0,,24;29;
-The Windmill Warrior,2,0,,11;30;
-Dominate Me Demi,3,0,,11;30;
-Hannah B's Fourth Choice,9,0,,11;30;
-I'm Just Excited to See Nick,7,0,,17;7;
-Pistol Pete,1,0,,4;24;
-No I Won't Stop Talking About Jaqueline,4,0,,
-Alex,6,0,,3;7;
-Dorko,8,0,,
-Mr. Commissioner Sir,10,0,,
-Matt,11,0,,
+No I Won't Stop Talking About Jaqueline,4,215,,7;11;,1
+Matt Ferruzza Is A Fraud,5,115,,24;29;,0
+Alex,6,110,,3;7;,0
+I'm Just Excited to See Nick,7,110,,17;7;,0
+Dominate Me Demi,3,110,,11;30;,1
+Hannah B's Fourth Choice,9,105,,11;30;,0
+Dorko,8,25,,,0
+Matt,11,25,,,0
+The Windmill Warrior,2,5,,11;30;,1
+Mr. Commissioner Sir,10,5,,1;11;,0
+Pistol Pete,1,0,,4;24;,0

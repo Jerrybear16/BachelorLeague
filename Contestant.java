@@ -45,6 +45,9 @@ public class Contestant
 			return "0";
 		}
 	}
+	public boolean isActive(){
+		return active;
+	}
 
 	public String toString(){
 
