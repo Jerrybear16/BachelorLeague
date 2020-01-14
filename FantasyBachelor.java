@@ -263,15 +263,16 @@ public class FantasyBachelor
 				Say("\t2. Enter player contestant selections (wildcards)");
 				Say("\t3. Enter player winner selection");
 				Say("\t4. Enter player weekly bonus selection");
-				Say("\t5. Enter a score");
-				Say("\t6. Reset scores");
-				Say("\t7. Weekly Bonus over/yes hits");
-				Say("\t8. Weekly bonus under/no hits");
-				Say("\t9. Emliminate a contestant");
-				Say("\t10. Display all players");
-				Say("\t11. Display all contestants");
-				Say("\t12 Check For Kisses");
-				Say("\t13. Exit");
+				Say("\t5. Enter player kiss guess");
+				Say("\t6. Enter a score");
+				Say("\t7. Reset scores");
+				Say("\t8. Weekly Bonus over/yes hits");
+				Say("\t9. Weekly bonus under/no hits");
+				Say("\t10. Emliminate a contestant");
+				Say("\t11. Display all players");
+				Say("\t12. Display all contestants");
+				Say("\t13. Check For Kisses");
+				Say("\t14. Exit");
 				break;
 			}
 			case 1:{
@@ -388,7 +389,7 @@ public class FantasyBachelor
 
 		while(true){
 			x = getInput(s);
-			if(x>0 && x<=11){
+			if(x>0 && x<=14){
 				break;
 			}
 			Say("invalid entry, try again");
@@ -448,8 +449,28 @@ public class FantasyBachelor
 		for(Player pl:p){
 			if(pl.getKisses()==s.getKisses()){
 				Say(pl.getName()+" guessed the correct number of kisses!");
-				pl.setScore(25);
+				pl.setScore(50);
 			}
+		}
+	}
+
+	private static void setPlayerKisses(ArrayList<Player> p,Scanner s){
+
+		int x;
+
+		for(Player pl:p){
+			Say("Enter kiss guess for "+pl.getName());
+
+			while(true){
+				x=getInput(s);
+				if(x>0){
+					break;
+				}
+				Say("Invalid entry, try again");
+			}
+			pl.setKisses(x);
+
+
 		}
 	}
 
@@ -571,7 +592,11 @@ public class FantasyBachelor
 					getWeeklyBonusInput(pl,input);
 					break;
 				}
-				case 5:{//print contetant list, select contestant, select a scoring play, update players who have that contestant
+				case 5:{
+					setPlayerKisses(players,input);
+					break;
+				}
+				case 6:{//print contetant list, select contestant, select a scoring play, update players who have that contestant
 					printMenu(conts);
 					c = getContestant(input,conts);
 					printMenu(1);
@@ -581,39 +606,39 @@ public class FantasyBachelor
 					sortByScore(players);
 					break;
 				}
-				case 6:{//take every score and make it 0
+				case 7:{//take every score and make it 0
 					for(Player play:players){
 						play.setScore(-play.getScore());
 					}
 					break;
 				}
-				case 7:{
+				case 8:{
 					weeklyBonus(players,true);
 					break;
 				}
-				case 8:{
+				case 9:{
 					weeklyBonus(players,false);
 					break;
 				}
-				case 9:{
+				case 10:{
 					printMenu(conts);
 					c = getContestant(input,conts);
 					c.eliminate();
 					break;
 				}
-				case 10:{
+				case 11:{
 					printMenu(players);
 					break;
 				}
-				case 11:{
+				case 12:{
 					printMenu(conts);
 					break;
 				}
-				case 12:{
+				case 13:{
 					checkForKisses(sb,players);
 					break;
 				}
-				case 13:{//exit game
+				case 14:{//exit game
 					Say("Thanks for playing!");
 					running = false;
 					break;
