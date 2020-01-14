@@ -1,0 +1,30 @@
+Alayah,1,1
+Alexa,2,1
+Avonlea,3,0
+Coutrney,4,0
+Deandra,5,1
+Eunice,6,0
+Hanna Ann,7,1
+Jade,8,0
+Jasmine,9,0
+Jenna,10,0
+Katrina,11,0
+Kelly,12,1
+Kelsey,13,1
+Kiarra,14,1
+Kylie,15,0
+Lauren,16,1
+Lexi,17,1
+Madison,18,1
+Maurissa,19,0
+Megan,20,0
+Mykenna,21,1
+Natasha,22,1
+Payton,23,1
+Sarah,24,1
+Savannah,25,1
+Shiann,26,1
+Sydney,27,1
+Tammy,28,1
+Victoria F,29,1
+Vitoria P,30,0
