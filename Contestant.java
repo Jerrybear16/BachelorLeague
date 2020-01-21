@@ -12,12 +12,14 @@ public class Contestant
 	private String name;
 	private Integer id;
 	private boolean active;
+	private boolean rose;
 
 	public Contestant(String n, int i,boolean b)
 	{
 		name = new String(n);
 		id = i;
 		active = b;
+		rose=false;
 	}
 
 	public int getID()
@@ -47,6 +49,14 @@ public class Contestant
 	}
 	public boolean isActive(){
 		return active;
+	}
+
+	public void setRose(boolean b){
+		rose = b;
+	}
+
+	public boolean getRose(){
+		return rose;
 	}
 
 	public String toString(){

@@ -63,6 +63,8 @@ public class Scoreboard
 			ret = 5;//rose recieved
 		}else if(x==14){
 			ret = 5;//goes on group date
+		}else if(x==15){
+			ret = 5;//reads date card
 		}
 
 		return ret;

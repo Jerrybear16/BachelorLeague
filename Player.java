@@ -136,7 +136,13 @@ public class Player
 	{
 		StringBuilder s = new StringBuilder();
 
-		s.append("Player: "+name+", Score: "+score+"\n");
+		s.append("Player: "+name+", Score: "+score);
+		if(weeklyBonus){
+			s.append(" Bonus: over/yes");
+		}else{
+			s.append(" Bonus: under/no");
+		}
+		s.append(" Kisses: "+kisses+"\n");
 
 		if(winner!=null){
 			s.append("\t\t\tWinner: "+winner.getName()+"\n");

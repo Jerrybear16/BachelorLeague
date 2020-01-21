@@ -34,6 +34,9 @@ public class FantasyBachelor
 		if(ps.length>=6){
 			np.setWeeklyBonus(Integer.parseInt(ps[5])==1);
 		}
+		if(ps.length>=7){
+			np.setKisses(Integer.parseInt(ps[6]));
+		}
 
 		return np;
 	}
@@ -208,6 +211,7 @@ public class FantasyBachelor
 				}else{
 					b.append(","+0);
 				}
+				b.append(","+players.get(i).getKisses());
 
 				p.println(b.toString());
 				p.flush();
@@ -260,19 +264,18 @@ public class FantasyBachelor
 			case 0:{
 				Say("Enter the action you want to take: ");
 				Say("\t1. Enter player contestant selections (final fours)");
-				Say("\t2. Enter player contestant selections (wildcards)");
+				Say("\t2. Make weekly selections");
 				Say("\t3. Enter player winner selection");
-				Say("\t4. Enter player weekly bonus selection");
-				Say("\t5. Enter player kiss guess");
-				Say("\t6. Enter a score");
-				Say("\t7. Reset scores");
-				Say("\t8. Weekly Bonus over/yes hits");
-				Say("\t9. Weekly bonus under/no hits");
-				Say("\t10. Emliminate a contestant");
-				Say("\t11. Display all players");
-				Say("\t12. Display all contestants");
-				Say("\t13. Check For Kisses");
-				Say("\t14. Exit");
+				Say("\t4. Enter a score");
+				Say("\t5. Report group date");
+				Say("\t6. Report Rose Ceremony");
+				Say("\t7. Weekly Bonus over/yes hits");
+				Say("\t8. Weekly bonus under/no hits");
+				Say("\t9. Emliminate a contestant");
+				Say("\t10. Display all players");
+				Say("\t11. Display all contestants");
+				Say("\t12. Check For Kisses");
+				Say("\t13. Exit");
 				break;
 			}
 			case 1:{
@@ -291,6 +294,7 @@ public class FantasyBachelor
 				Say("\t12. Kissed the Bachelor");
 				Say("\t13. Rose recieved");
 				Say("\t14. Goes on group date");
+				Say("\t15. Reads date Card");
 				break;
 			}
 		}
@@ -306,10 +310,8 @@ public class FantasyBachelor
 					s+=10;
 				}else if(sp==2){
 					s-=10;
-				}else if(sp==3||sp==4||sp==5||sp==6||sp==11){
+				}else if(sp==3||sp==4||sp==5||sp==6||sp==11||sp==12||sp==13||sp==14){
 					s+=5;
-				}else if(sp==10){
-					s+=100;
 				}
 			}
 			if(player.getFF().containsValue(c)){
@@ -389,7 +391,7 @@ public class FantasyBachelor
 
 		while(true){
 			x = getInput(s);
-			if(x>0 && x<=14){
+			if(x>0 && x<=15){
 				break;
 			}
 			Say("invalid entry, try again");
@@ -399,6 +401,7 @@ public class FantasyBachelor
 		return x;
 
 	}
+
 
 	private static void getWeeklyBonusInput(Player p, Scanner s){
 		Say("Enter 1 for over/yes. 0 for under/no");
@@ -454,12 +457,11 @@ public class FantasyBachelor
 		}
 	}
 
-	private static void setPlayerKisses(ArrayList<Player> p,Scanner s){
+	private static void setPlayerKisses(Player p,Scanner s){
 
 		int x;
 
-		for(Player pl:p){
-			Say("Enter kiss guess for "+pl.getName());
+			Say("Enter kiss guess for "+p.getName());
 
 			while(true){
 				x=getInput(s);
@@ -468,10 +470,7 @@ public class FantasyBachelor
 				}
 				Say("Invalid entry, try again");
 			}
-			pl.setKisses(x);
-
-
-		}
+			p.setKisses(x);
 	}
 
 	public static void main(String[] args)
@@ -492,6 +491,7 @@ public class FantasyBachelor
 		int entry;//user input for main menue
 		int scoringPlay;//user input for what play was scored
 		int score;//score to be added to players
+		char keepGoing;//for looping functions
 
 		//initialize list of players and contestants
 		players = new ArrayList<>();
@@ -554,27 +554,34 @@ public class FantasyBachelor
 					printMenu(players);
 					pl = getPlayer(input,players);
 					Say(pl.toString());
-					printMenu(conts);
-					c = getContestant(input,conts);
-					Say(c.toString());
-					pl.addFF(c);
-					break;
-				}
-				case 2:{//same thing but for wildcard list
 
-					
-						printMenu(players);
-						pl = getPlayer(input,players);
-						pl.clearWC();
-					for(int i=0;i<2;i++){
-						Say(pl.toString());
+					for(int i=0;i<4;i++){
 						printMenu(conts);
 						c = getContestant(input,conts);
 						Say(c.toString());
-						pl.addWC(c);
-
+						pl.addFF(c);
 					}
-										break;
+					
+					break;
+				}
+				case 2:{//make all weekly selections in one action
+					
+					for(Player play:players){
+						Say("Making Selections for "+play.getName());
+						play.clearWC();
+						for(int i=0;i<2;i++){
+							Say(play.toString());
+							printMenu(conts);
+							c = getContestant(input,conts);
+							Say(c.toString());
+							play.addWC(c);
+						}
+
+						setPlayerKisses(play,input);
+						getWeeklyBonusInput(play,input);
+					}
+					break;
+					
 				}
 				case 3:{//same thing but for winner
 					printMenu(players);
@@ -586,17 +593,7 @@ public class FantasyBachelor
 					pl.setWinner(c);
 					break;
 				}
-				case 4:{
-					printMenu(players);
-					pl = getPlayer(input,players);
-					getWeeklyBonusInput(pl,input);
-					break;
-				}
-				case 5:{
-					setPlayerKisses(players,input);
-					break;
-				}
-				case 6:{//print contetant list, select contestant, select a scoring play, update players who have that contestant
+				case 4:{//print contetant list, select contestant, select a scoring play, update players who have that contestant
 					printMenu(conts);
 					c = getContestant(input,conts);
 					printMenu(1);
@@ -606,39 +603,79 @@ public class FantasyBachelor
 					sortByScore(players);
 					break;
 				}
-				case 7:{//take every score and make it 0
-					for(Player play:players){
-						play.setScore(-play.getScore());
+				case 5:{
+					
+
+					while(true){
+						Say("Select contestants who are going on the group date");
+						printMenu(conts);
+						c = getContestant(input,conts);
+						score = sb.getScore(14);
+						updatePlayers(c,players,score,14);
+						sortByScore(players);
+						Say("CONTINUE? Y/N");
+						keepGoing=input.nextLine().charAt(0);
+						if(!(keepGoing=='y')){
+							break;
+						}
 					}
 					break;
 				}
-				case 8:{
+				case 6:{
+					while(true){
+						Say("Select contestants who got a rose");
+						printMenu(conts);
+						c = getContestant(input,conts);
+						c.setRose(true);
+						score = sb.getScore(13);
+						updatePlayers(c,players,score,13);
+						sortByScore(players);
+						Say("CONTINUE? Y/N");
+						keepGoing=input.nextLine().charAt(0);
+						if(!(keepGoing=='y')){
+							break;
+						}
+					}
+
+					for(Contestant contestant:conts.values()){
+						if(!contestant.getRose()){
+							Say(contestant.getName()+" did not recieve a rose and is eliminated");
+							contestant.eliminate();
+						}
+					}
+
+					for(Contestant contestant:conts.values()){
+						contestant.setRose(false);
+					}
+					break;
+				}
+				case 7:{
 					weeklyBonus(players,true);
 					break;
 				}
-				case 9:{
+				case 8:{
 					weeklyBonus(players,false);
 					break;
 				}
-				case 10:{
+				case 9:{
 					printMenu(conts);
 					c = getContestant(input,conts);
 					c.eliminate();
 					break;
 				}
-				case 11:{
+				case 10:{
 					printMenu(players);
 					break;
 				}
-				case 12:{
+				case 11:{
 					printMenu(conts);
 					break;
 				}
-				case 13:{
+				case 12:{
 					checkForKisses(sb,players);
 					break;
 				}
-				case 14:{//exit game
+				case 13:{//exit game
 					Say("Thanks for playing!");
 					running = false;
 					break;
